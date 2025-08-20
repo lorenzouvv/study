@@ -1,103 +1,153 @@
-import Image from "next/image";
+'use client'; // Necessário para hooks e interatividade
+
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Efeito typewriter
+  useEffect(() => {
+    const texto = "Bem-vindo ao Estudo-Js.";
+    const elemento = document.getElementById("titulo");
+    let i = 0;
+    let isDeleting = false;
+
+    function digitar() {
+      const velocidadeNormal = 100;
+      const velocidadeApagar = 50;
+      const esperaFim = 2000;
+
+      if (!isDeleting && i <= texto.length) {
+        if (elemento) elemento.textContent = texto.substring(0, i);
+        i++;
+        setTimeout(digitar, i === texto.length ? esperaFim : velocidadeNormal);
+
+        if (i > texto.length) {
+          isDeleting = true;
+          i = texto.length;
+        }
+      } else if (isDeleting && i >= 0) {
+        if (elemento) elemento.textContent = texto.substring(0, i);
+        i--;
+        setTimeout(digitar, velocidadeApagar);
+        if (i < 0) {
+          isDeleting = false;
+          i = 0;
+        }
+      }
+    }
+
+    digitar();
+  }, []);
+
+  return (
+    <>
+      <Head>
+        <title>Estudo-Js</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
+      <div className="bg-gray-100 min-h-screen">
+        <div className="h-screen flex overflow-hidden bg-gray-100">
+          {/* Sidebar */}
+          <div 
+            className={`fixed z-50 bg-gray-800 text-white w-56 min-h-screen overflow-y-auto transition-transform ease-in-out duration-300 ${
+              sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <div className="p-4">
+              <h1 className="text-2xl font-semibold">Menu</h1>
+              <ul className="mt-4">
+                <li className="mb-2"><a href="#" className="block hover:text-indigo-400">Início</a></li>
+                <li className="mb-2"><a href="#" className="block hover:text-indigo-400">Formulário</a></li>
+                <li className="mb-2"><a href="#" className="block hover:text-indigo-400">Calculadora</a></li>
+                <li className="mb-2"><a href="#" className="block hover:text-indigo-400">Conversor de Temp</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Conteúdo principal */}
+          <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${
+            sidebarOpen ? 'blur-sm brightness-90' : ''
+          }`}>
+            {/* Navbar */}
+            <div className="bg-white shadow">
+              <div className="container mx-auto">
+                <div className="flex justify-between items-center py-4 px-2">
+                  <h1 className="text-xl font-semibold">Estudo-Js.</h1>
+                  <button 
+                    className="text-gray-500 hover:text-gray-600"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Body content */}
+            <div className="flex-1 overflow-auto p-8">
+              <h1 id="titulo" className="tracking-normal min-h-[1.5em] text-3xl font-semibold text-center mb-8"></h1>
+              <p className="tracking-widest text-center mb-12">... Em Construção ...</p>
+              
+              <div className="flex flex-wrap justify-center gap-8 w-full">
+                {/* Card 1 */}
+                <div className="w-80 h-52 bg-gradient-to-tr from-blue-500 to-sky-300 rounded-2xl shadow-2xl relative cursor-pointer transition-all duration-300 hover:scale-105">
+                  <div className="glow opacity-0 transition-opacity duration-300"></div>
+                  <div className="p-6 flex flex-col h-full justify-between relative z-10">
+                    <div>
+                      <h2 className="text-3xl font-bold text-white mb-2">Formulário</h2>
+                      <p className="text-gray-200">Teste de formulário feito em JavaScript.</p>
+                    </div>
+                    <button className="w-full py-2 bg-white text-blue-700 rounded-lg font-semibold hover:scale-105 transition-transform">
+                      Clique aqui!
+                    </button>
+                  </div>
+                </div>
+
+                {/* Card 2 */}
+                <div className="w-80 h-52 bg-gradient-to-tr from-blue-500 to-sky-300 rounded-2xl shadow-2xl relative cursor-pointer transition-all duration-300 hover:scale-105">
+                  <div className="glow opacity-0 transition-opacity duration-300"></div>
+                  <div className="p-6 flex flex-col h-full justify-between relative z-10">
+                    <div>
+                      <h2 className="text-3xl font-bold text-white mb-2">Calculadora</h2>
+                      <p className="text-gray-200">Teste de calculadora feita em JavaScript.</p>
+                    </div>
+                    <button className="w-full py-2 bg-white text-blue-700 rounded-lg font-semibold hover:scale-105 transition-transform">
+                      Clique aqui!
+                    </button>
+                  </div>
+                </div>
+
+                {/* Card 3 */}
+                <div className="w-80 h-52 bg-gradient-to-tr from-blue-500 to-sky-300 rounded-2xl shadow-2xl relative cursor-pointer transition-all duration-300 hover:scale-105">
+                  <div className="glow opacity-0 transition-opacity duration-300"></div>
+                  <div className="p-6 flex flex-col h-full justify-between relative z-10">
+                    <div>
+                      <h2 className="text-3xl font-bold text-white mb-2">Conversor</h2>
+                      <p className="text-gray-200">Teste de conversor de temperatura feito em JavaScript.</p>
+                    </div>
+                    <button className="w-full py-2 bg-white text-blue-700 rounded-lg font-semibold hover:scale-105 transition-transform">
+                      Clique aqui!
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Overlay para fechar sidebar ao clicar fora */}
+          {sidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-30 z-40"
+              onClick={() => setSidebarOpen(false)}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
