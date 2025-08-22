@@ -35,7 +35,7 @@ export default function Home() {
 
           {sidebarOpen && (
             <div 
-              className="fixed inset-0 bg-black bg-opacity-30 z-40"
+              className="fixed inset-0 bg-transparent bg-opacity-30 z-40"
               onClick={() => setSidebarOpen(false)}
             />
           )}
