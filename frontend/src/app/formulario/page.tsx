@@ -80,6 +80,57 @@ export default function FormularioPage() {
                             <option value="outros">Outros</option>
                            </select>
                         </div>
+                        <div className='space-y-2'>
+                          <label htmlFor="preco" className='block text-sm font-medium text-gray-700'>Preço</label>
+                          <input 
+                          id='preco' 
+                          name='preco' 
+                          type='number'
+                          step='0.01'
+                          min='0'
+                          required 
+                          value={formData.preco} 
+                          onChange={handleInputChange} 
+                          className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                          placeholder="Ex: 299,90" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                                        <label htmlFor="quantidade" className="block text-sm font-medium text-gray-700">Quantidade em Estoque *</label>
+                                        <input 
+                                            id="quantidade"
+                                            name="quantidade"
+                                            type="number" 
+                                            min="0"
+                                            required
+                                            value={formData.quantidade}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                            placeholder="Ex: 50"
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <div className="space-y-2">
+                                    <label htmlFor="descricao" className="block text-sm font-medium text-gray-700">Descrição do Produto</label>
+                                    <textarea 
+                                        id="descricao"
+                                        name="descricao"
+                                        rows={4}
+                                        value={formData.descricao}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                        placeholder="Descreva as características do produto..."
+                                    ></textarea>
+                                </div>
+                                
+                                <div className="flex justify-center pt-4">
+                                    <button 
+                                        type="submit" 
+                                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300 transform hover:-translate-y-1"
+                                    >
+                                        Cadastrar Produto
+                                    </button>
                       </div>
                   </form>
 
